@@ -7,6 +7,17 @@
  * - Controls: color picker, gradient, file input, visible checkbox
  * - Aperçu live
  */
+import { toggleBgFields, handleImageUpload, ensureAuth } from "./admin-utils.js";
+import { ensureAuth } from "./admin-utils.js";
+ensureAuth(true);
+
+
+window.addEventListener("DOMContentLoaded", () => {
+  ensureAuth(true);
+  document.getElementById("bgType").addEventListener("change", () => toggleBgFields("header"));
+  document.getElementById("bgImage").addEventListener("change", e => handleImageUpload(e, "headerBgImageData"));
+  // …
+});
 
 const SETTINGS_KEY = "stagateSettingsAdv";
 
@@ -154,8 +165,10 @@ window.addEventListener("DOMContentLoaded", () => {
     a.addEventListener("click", () => document.getElementById("burger-toggle").checked = false);
   });
   document.getElementById("logoutBtn").addEventListener("click", e => {
-    e.preventDefault();
-    localStorage.removeItem("stagate_admin_logged");
-    window.location.href = "index.html";
-  });
+  e.preventDefault();
+  localStorage.removeItem("stagate_admin_logged");
+  const redirectTo = new URLSearchParams(window.location.search).get("redirect");
+  window.location.href = "admin-login.html" + (redirectTo ? `?redirect=${redirectTo}` : "");
+});
+
 });

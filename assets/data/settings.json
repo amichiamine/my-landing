@@ -1,10 +1,8 @@
-{
-  /* 1. USERS */
-  "users": {
+{  "users": {
     "roles": ["admin", "manager"],
     "credentials": {
-      "admin":   "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8",  // SHA1("password")
-      "manager": "12dea96fec20593566ab75692c9949596833adc9"   // SHA1("manager")
+      "admin":   "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8", 
+      "manager": "12dea96fec20593566ab75692c9949596833adc9"  
     },
     "pages": {
       "manager": ["header","body","footer"],
@@ -12,13 +10,12 @@
     }
   },
 
-  /* 2. HEADER */
   "header": {
     "visible": true,
-    "bgType": "gradient",           // "solid" | "gradient" | "image"
+    "bgType": "gradient",         
     "bgValue": "linear-gradient(90deg,#0062ff 0%,#00c6ff 100%)",
     "height": 70,
-    "logo": "assets/img/logo.svg",
+    "logo": "assets/img/logo.png",
     "siteName": {
       "visible": true,
       "text": "StaGate LMS",
@@ -73,7 +70,6 @@
     }
   },
 
-  /* 3. BODY */
   "body": {
     "visible": true,
     "bgType": "gradient",
@@ -202,7 +198,6 @@
     ]
   },
 
-  /* 4. FOOTER */
   "footer": {
     "visible": true,
     "bgType": "gradient",

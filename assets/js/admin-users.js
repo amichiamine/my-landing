@@ -5,6 +5,17 @@
  * Lecture/écriture dans localStorage (settings.jsoné côté client)
  * Nécessite CryptoJS pour SHA-1 (inclus dans admin-users.html)
  */
+import { toggleBgFields, handleImageUpload, ensureAuth } from "./admin-utils.js";
+import { ensureAuth } from "./admin-utils.js";
+ensureAuth(true);
+
+
+window.addEventListener("DOMContentLoaded", () => {
+  ensureAuth(true);
+  document.getElementById("bgType").addEventListener("change", () => toggleBgFields("header"));
+  document.getElementById("bgImage").addEventListener("change", e => handleImageUpload(e, "headerBgImageData"));
+  // …
+});
 
 const SETTINGS_KEY = "stagateSettingsAdv";
 

@@ -6,6 +6,17 @@
  * - Contrôles color picker, gradient, file input, visible checkbox
  * - Aperçu live dans l’iframe
  */
+import { toggleBgFields, handleImageUpload, ensureAuth } from "./admin-utils.js";
+import { ensureAuth } from "./admin-utils.js";
+ensureAuth(true);
+
+
+window.addEventListener("DOMContentLoaded", () => {
+  ensureAuth(true);
+  document.getElementById("bgType").addEventListener("change", () => toggleBgFields("header"));
+  document.getElementById("bgImage").addEventListener("change", e => handleImageUpload(e, "headerBgImageData"));
+  // …
+});
 
 const SETTINGS_KEY = "stagateSettingsAdv";
 
@@ -74,11 +85,13 @@ function saveFooter() {
   const f = cfgAll.footer;
   f.visible = document.getElementById("footerVisible").checked;
   f.bgType  = document.getElementById("footerBgType").value;
-  if (f.bgType === "solid") {
-    f.bgValue = document.getElementById("footerBgColor").value;
-  } else if (f.bgType === "gradient" || f.bgType === "image") {
-    f.bgValue = document.getElementById("footerBgGradient").value;
-  }
+  if (f.bgType==="solid") {
+  cfg.footer.bgValue = document.getElementById("footerBgColor").value;
+} else if (f.bgType==="gradient") {
+  cfg.footer.bgValue = document.getElementById("footerBgGradient").value;
+} else {  // image
+  cfg.footer.bgImage = document.getElementById("bgImageData").value;
+}
   f.height = parseInt(document.getElementById("footerHeight").value, 10);
   f.text = {
     html:  document.getElementById("footerText").value,
@@ -107,8 +120,10 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
   document.getElementById("logoutBtn").addEventListener("click", e => {
-    e.preventDefault();
-    localStorage.removeItem("stagate_admin_logged");
-    window.location.href = "index.html";
-  });
+  e.preventDefault();
+  localStorage.removeItem("stagate_admin_logged");
+  const redirectTo = new URLSearchParams(window.location.search).get("redirect");
+  window.location.href = "admin-login.html" + (redirectTo ? `?redirect=${redirectTo}` : "");
+});
+
 });

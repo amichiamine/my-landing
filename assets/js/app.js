@@ -47,7 +47,7 @@ function applySettings(cfg) {
 function renderHeader(h) {
   const el = document.getElementById("main-header");
   // Fond et taille
-  el.style.background = bgCSS(h.bg.type, h.bg.value);
+ el.style.background = bgCSS(h.bgType, h.bgValue);
   el.style.height = h.height + "px";
   // Logo & titre
   const logoDiv = document.createElement("div");
@@ -239,7 +239,7 @@ function renderFooter(f) {
 
 /* ========= UTILITAIRES ========= */
 function bgCSS(type, val) {
-  if (type==="image") return `url('${val}') center/cover no-repeat`;
+  if (type === "image") return `url('${val}') center/cover no-repeat`;
   return val;
 }
 function initBurger() {

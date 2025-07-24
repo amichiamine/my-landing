@@ -7,6 +7,17 @@
  * - Aperçu live dans l’iframe
  * Requiert CryptoJS pour SHA-1 (inclus dans admin-header.html)
  */
+import { toggleBgFields, handleImageUpload, ensureAuth } from "./admin-utils.js";
+import { ensureAuth } from "./admin-utils.js";
+ensureAuth(true);
+
+
+window.addEventListener("DOMContentLoaded", () => {
+  ensureAuth(true);
+  document.getElementById("bgType").addEventListener("change", () => toggleBgFields("header"));
+  document.getElementById("bgImage").addEventListener("change", e => handleImageUpload(e, "headerBgImageData"));
+  // …
+});
 
 const SETTINGS_KEY = "stagateSettingsAdv";
 
@@ -25,10 +36,12 @@ function saveConfig(cfg) {
 }
 
 /** Vérifie l'authentification */
-function ensureAuth() {
+function ensureAuth(withRedirect = false) {
   if (localStorage.getItem("stagate_admin_logged") !== "1") {
-    alert("Accès non autorisé");
-    window.location.href = "admin-header.html";
+    const redirectParam = withRedirect
+      ? `?redirect=${encodeURIComponent(window.location.pathname)}`
+      : "";
+    window.location.href = "admin-login.html" + redirectParam;
   }
 }
 
@@ -78,11 +91,13 @@ function saveHeader() {
   const h = allCfg.header;
   h.visible = document.getElementById("headerVisible").checked;
   h.bgType  = document.getElementById("bgType").value;
-  if (h.bgType === "solid") {
-    h.bgValue = document.getElementById("bgColor").value;
-  } else {
-    h.bgValue = document.getElementById("bgGradient").value;
-  }
+  if (h.bgType==="solid") {
+  cfg.header.bgValue = document.getElementById("bgColor").value;
+} else if (h.bgType==="gradient") {
+  cfg.header.bgValue = document.getElementById("bgGradient").value;
+} else {  // image
+  cfg.header.bgImage = document.getElementById("bgImageData").value;
+}
   h.height = parseInt(document.getElementById("height").value, 10);
 
   // logo file
@@ -128,8 +143,10 @@ window.addEventListener("DOMContentLoaded", () => {
     a.addEventListener("click", () => document.getElementById("burger-toggle").checked = false);
   });
   document.getElementById("logoutBtn").addEventListener("click", e => {
-    e.preventDefault();
-    localStorage.removeItem("stagate_admin_logged");
-    window.location.href = "index.html";
-  });
+  e.preventDefault();
+  localStorage.removeItem("stagate_admin_logged");
+  const redirectTo = new URLSearchParams(window.location.search).get("redirect");
+  window.location.href = "admin-login.html" + (redirectTo ? `?redirect=${redirectTo}` : "");
+});
+
 });
