@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Preview Footer</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <footer id="main-footer"></footer>
+
+  <script>
+    fetch('assets/data/settings.json')
+      .then(res => res.json())
+      .then(cfg => {
+        const f = cfg.footer;
+        const el = document.getElementById('main-footer');
+        if (!f.visible) return;
+
+        // Fond & hauteur
+        el.style.background = f.bg.type === 'image'
+          ? `url('${f.bg.value}') center/cover no-repeat`
+          : f.bg.value;
+        el.style.height = f.height + 'px';
+
+        // Texte
+        if (f.text.visible) {
+          const txt = document.createElement('div');
+          txt.innerHTML = f.text.html;
+          Object.assign(txt.style, {
+            fontFamily: f.text.font,
+            fontSize: f.text.size + 'px',
+            color: f.text.color,
+            textAlign: f.text.align
+          });
+          el.appendChild(txt);
+        }
+
+        // Blocs dynamiques
+        if (f.dynamicBlocks.visible) {
+          const wrap = document.createElement('div');
+          f.dynamicBlocks.items
+            .filter(b => b.visible)
+            .sort((a, b) => a.layout.order - b.layout.order)
+            .forEach(b => {
+              const div = document.createElement('div');
+              div.innerHTML = b.html;
+              const st = b.style, lt = b.layout;
+              Object.assign(div.style, {
+                background: st.bg.type === 'image'
+                  ? `url('${st.bg.value}') center/cover no-repeat`
+                  : st.bg.value,
+                color: st.color,
+                fontFamily: st.font,
+                fontSize: st.size + 'px',
+                borderRadius: st.borderRadius + 'px',
+                margin: `${lt.spacing.margin.top}px ${lt.spacing.margin.right}px ${lt.spacing.margin.bottom}px ${lt.spacing.margin.left}px`,
+                padding: `${lt.spacing.padding.all}px`,
+                position: lt.position.type
+              });
+              if (lt.position.type === 'absolute') {
+                if (lt.position.top  != null) div.style.top  = lt.position.top + 'px';
+                if (lt.position.left != null) div.style.left = lt.position.left + 'px';
+              }
+              wrap.appendChild(div);
+            });
+          el.appendChild(wrap);
+        }
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StaGate LMS — Accueil</title>
+  <!-- Liens CSS et JS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script defer src="assets/js/app.js"></script>
+</head>
+<body>
+  <!-- ===== EN-TÊTE ===== -->
+  <header id="main-header" class="main-header">
+    <!-- Logo + Nom du site -->
+    <div class="logo">
+      <img src="assets/img/logo.png" alt="StaGate LMS" />
+      <span class="site-name">StaGate LMS</span>
+    </div>
+
+    <!-- Checkbox + label pour menu burger responsive -->
+    <input type="checkbox" id="burger-toggle" title="Ouvrir ou fermer le menu de navigation">
+    <label for="burger-toggle" class="burger" aria-label="Ouvrir ou fermer le menu de navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+
+    <!-- Menu de navigation -->
+    <nav class="menu">
+      <a href="#" class="active">Accueil</a>
+      <a href="#about">À propos</a>
+      <a href="#contact">Contactez-nous</a>
+      <a href="admin-header.html">Accès Admin</a>
+    </nav>
+  </header>
+
+  <!-- ===== CORPS ===== -->
+  <main id="main-content"></main>
+
+  <!-- ===== PIED DE PAGE ===== -->
+  <footer id="main-footer"></footer>
+
+  <!-- Ferme le menu burger quand un lien est cliqué -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll('.menu a').forEach(link => {
+        link.addEventListener('click', () => {
+          const cb = document.getElementById('burger-toggle');
+          if (cb) cb.checked = false;
+        });
+      });
+    });
+  </script>
+</body>
+</html>

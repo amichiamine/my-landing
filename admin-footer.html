@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Admin — Pied de page</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+  <script defer src="assets/js/admin-footer.js"></script>
+</head>
+<body>
+  <!-- Header commun aux pages admin -->
+  <header class="main-header" id="main-header">
+    <div class="logo">
+      <img src="assets/img/logo.svg" alt="">
+      <span class="site-name">Admin StaGate LMS</span>
+    </div>
+    <input type="checkbox" id="burger-toggle" title="Ouvrir le menu de navigation" aria-label="Ouvrir le menu de navigation">
+    <label for="burger-toggle" class="burger" title="Ouvrir le menu de navigation"><span></span><span></span><span></span></label>
+    <nav class="menu">
+      <a href="admin-header.html">En-tête</a>
+      <a href="admin-body.html">Corps</a>
+      <a href="admin-footer.html" class="active">Pied de page</a>
+      <a href="admin-users.html">Gestion utilisateurs</a>
+      <a href="index.html" target="_blank">Voir le site</a>
+      <a href="#" id="logoutBtn">Déconnexion</a>
+    </nav>
+  </header>
+
+  <main style="display:flex; flex-wrap:wrap;">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>Pied de page</h2>
+      <a href="admin-header.html">En-tête</a>
+      <a href="admin-body.html">Corps</a>
+      <a href="admin-footer.html" class="current">Pied de page</a>
+      <a href="admin-users.html">Gestion utilisateurs</a>
+    </aside>
+
+    <!-- Formulaire de personnalisation du footer -->
+    <section style="flex:1; padding:2rem;">
+      <form id="footerForm">
+        <h3>Paramètres du Pied de page</h3>
+
+        <!-- Visibilité -->
+        <label>
+          <input type="checkbox" id="footerVisible">
+          Visible
+        </label>
+
+        <!-- Type de fond -->
+        <label>Type de fond :
+          <select id="footerBgType">
+            <option value="solid">Solide</option>
+            <option value="gradient">Dégradé</option>
+            <option value="image">Image</option>
+          </select>
+        </label>
+
+        <!-- Valeur fond -->
+        <label for="footerBgColor">Couleur :</label>
+        <input type="color" id="footerBgColor">
+
+        <label for="footerBgGradient">Gradient CSS :</label>
+        <input type="text" id="footerBgGradient" placeholder="linear-gradient(...)">
+
+        <label for="footerBgImage">Image :</label>
+        <input type="file" id="footerBgImage" accept="image/*">
+
+        <!-- Hauteur -->
+        <label>Hauteur (px) :
+          <input type="number" id="footerHeight" min="20" max="200">
+        </label>
+
+        <!-- Texte -->
+        <label>Texte :
+          <input type="text" id="footerText">
+        </label>
+        <label>Police :
+          <input type="text" id="footerFont">
+        </label>
+        <label>Taille (px) :
+          <input type="number" id="footerFontSize" min="8" max="40">
+        </label>
+        <label>Couleur :
+          <input type="color" id="footerColor">
+        </label>
+        <label>Alignement :
+          <select id="footerAlign">
+            <option value="center">Centré</option>
+            <option value="left">Gauche</option>
+            <option value="right">Droite</option>
+          </select>
+        </label>
+
+        <!-- Blocs dynamiques -->
+        <fieldset>
+          <legend>Blocs dynamiques</legend>
+          <button type="button" id="addFooterBlock">Ajouter un bloc</button>
+          <div id="footerBlocksList"></div>
+        </fieldset>
+
+        <!-- Bouton Enregistrer -->
+        <button type="button" id="saveFooter">Enregistrer</button>
+      </form>
+
+      <!-- Aperçu live -->
+      <section>
+        <h3>Aperçu en direct</h3>
+        <iframe
+          src="preview-footer.html"
+          class="preview-frame"
+          title="Aperçu en direct du pied de page"
+        ></iframe>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    // Affiche ou masque les champs selon le type de fond sélectionné
+    document.getElementById('footerBgType').addEventListener('change', function() {
+      const type = this.value;
+      document.getElementById('footerBgColor').style.display    = type === 'solid'    ? '' : 'none';
+      document.getElementById('footerBgGradient').style.display = type === 'gradient' ? '' : 'none';
+      document.getElementById('footerBgImage').style.display    = type === 'image'    ? '' : 'none';
+    });
+
+    // Burger menu et déconnexion
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.menu a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          document.getElementById('burger-toggle').checked = false;
+        });
+      });
+      document.getElementById('logoutBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        localStorage.removeItem('stagate_admin_logged');
+        location.reload();
+      });
+    });
+  </script>
+</body>
+</html>

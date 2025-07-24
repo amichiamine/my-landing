@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+ <title>Preview Header</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header id="main-header" class="main-header"></header>
+
+  <script>
+    // Charge la config depuis settings.json
+    fetch('assets/data/settings.json')
+      .then(r => r.json())
+      .then(cfg => {
+        const h = cfg.header;
+        const el = document.getElementById('main-header');
+        if (!h.visible) return;
+
+        // Fond & taille
+        el.style.background = 
+          h.bg.type === 'image'
+            ? `url('${h.bg.value}') center/cover no-repeat`
+            : h.bg.value;
+        el.style.height = h.height + 'px';
+
+        // Logo + siteName
+        const logoDiv = document.createElement('div');
+        logoDiv.className = 'logo';
+        logoDiv.innerHTML = `
+          <img src="${h.logo}" alt="Logo" style="height:44px;">
+          <span class="site-name" style="
+            font-family:${h.siteName.font};
+            font-size:${h.siteName.size}px;
+            color:${h.siteName.color};
+          ">${h.siteName.text}</span>
+        `;
+        el.appendChild(logoDiv);
+
+        // Burger + menu container (structure de base)
+        el.insertAdjacentHTML('beforeend', `
+          <input type="checkbox" id="burger-toggle">
+          <label for="burger-toggle" class="burger"><span></span><span></span><span></span></label>
+          <nav class="menu"></nav>
+        `);
+
+        // Menu items
+        const nav = el.querySelector('.menu');
+        if (h.menu.visible) {
+          h.menu.items.forEach(item => {
+            const a = document.createElement('a');
+            a.href = item.link;
+            a.textContent = item.label;
+            if (item.active) a.classList.add('active');
+            Object.assign(a.style, {
+              color: h.menu.style.color,
+              fontFamily: h.menu.style.font,
+              fontSize: h.menu.style.size + 'px',
+              background: h.menu.style.background,
+              borderRadius: h.menu.style.borderRadius + 'px'
+            });
+            nav.appendChild(a);
+          });
+        }
+
+        // Blocs dynamiques
+        if (h.dynamicBlocks.visible) {
+          h.dynamicBlocks.items
+            .filter(b => b.visible)
+            .sort((a, b) => a.layout.order - b.layout.order)
+            .forEach(b => {
+              const div = document.createElement('div');
+              div.innerHTML = b.html;
+              const s = b.style;
+              Object.assign(div.style, {
+                background: s.bg.type === 'image'
+                  ? `url('${s.bg.value}') center/cover no-repeat`
+                  : s.bg.value,
+                color: s.color,
+                fontFamily: s.font,
+                fontSize: s.size + 'px',
+                borderRadius: s.borderRadius + 'px',
+                margin: `${b.layout.spacing.margin.top}px ${b.layout.spacing.margin.right}px ${b.layout.spacing.margin.bottom}px ${b.layout.spacing.margin.left}px`,
+                padding: b.layout.spacing.padding.all + 'px',
+                position: b.layout.position.type
+              });
+              if (b.layout.position.type === 'absolute') {
+                if (b.layout.position.top !== null) div.style.top = b.layout.position.top + 'px';
+                if (b.layout.position.left !== null) div.style.left = b.layout.position.left + 'px';
+              }
+              el.appendChild(div);
+            });
+        }
+
+        // Fermer burger au clic
+        document.querySelectorAll('.menu a').forEach(a => {
+          a.addEventListener('click', () => {
+            document.getElementById('burger-toggle').checked = false;
+          });
+        });
+      });
+  </script>
+</body>
+</html>

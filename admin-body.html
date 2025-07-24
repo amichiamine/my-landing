@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Admin — Corps</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+  <script defer src="assets/js/admin-body.js"></script>
+</head>
+<body>
+  <header class="main-header" id="main-header">
+    <div class="logo"><img src="assets/img/logo.svg" alt=""><span class="site-name">Admin StaGate LMS</span></div>
+    <input type="checkbox" id="burger-toggle" title="Ouvrir le menu de navigation" aria-label="Ouvrir le menu de navigation">
+    <label for="burger-toggle" class="burger" title="Ouvrir le menu de navigation"><span></span><span></span><span></span></label>
+    <nav class="menu">
+      <a href="admin-header.html">En-tête</a>
+      <a href="admin-body.html" class="active">Corps</a>
+      <a href="admin-footer.html">Pied de page</a>
+      <a href="admin-users.html">Gestion utilisateurs</a>
+      <a href="index.html" target="_blank">Voir le site</a>
+      <a href="#" id="logoutBtn">Déconnexion</a>
+    </nav>
+  </header>
+
+  <main style="display:flex; flex-wrap:wrap;">
+    <aside class="sidebar">
+      <h2>Corps</h2>
+      <a href="admin-body.html" class="current">Paramètres</a>
+      <a href="admin-header.html">En-tête</a>
+      <a href="admin-footer.html">Pied de page</a>
+      <a href="admin-users.html">Gestion utilisateurs</a>
+    </aside>
+
+    <section style="flex:1; padding:2rem;">
+      <form id="bodyForm">
+        <h3>Paramètres du Corps</h3>
+
+        <label><input type="checkbox" id="bodyVisible"> Visible</label>
+
+        <label>Type de fond :
+          <select id="bodyBgType">
+            <option value="solid">Solide</option>
+            <option value="gradient">Dégradé</option>
+            <option value="image">Image</option>
+          </select>
+        </label>
+        <label for="bodyBgColor">Couleur de fond :</label>
+        <input type="color" id="bodyBgColor" title="Choisissez la couleur de fond">
+        <input type="text"  id="bodyBgGradient" placeholder="linear-gradient(...)">
+       <input type="file"
+       id="bodyBgImage"
+       accept="image/*"
+       title="Sélectionner une image de fond">
+
+        <label>Hauteur (px) : <input type="number" id="bodyHeight" min="200" max="1500"></label>
+
+        <fieldset>
+          <legend>Ordre des sections</legend>
+          <label>Carousel : <input type="number" id="orderCarousel" min="1"></label>
+          <label>Bienvenue : <input type="number" id="orderWelcome" min="1"></label>
+          <label>Blocs : <input type="number" id="orderBlocks" min="1"></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Carousel</legend>
+          <label>Durée auto (ms) : <input type="number" id="carouselSpeed" min="1000"></label>
+          <label><input type="checkbox" id="carouselPause"> Pause au survol</label>
+          <h4>Slide n°1</h4>
+          <label>Image : <input type="file" id="slideImgFile" accept="image/*"></label>
+          <label>Titre : <input type="text" id="slideTitle"></label>
+          <label>Description : <textarea id="slideDesc"></textarea></label>
+          <label>Texte bouton : <input type="text" id="slideBtnText"></label>
+          <label>Lien bouton : <input type="text" id="slideBtnLink"></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Welcome Banner</legend>
+          <label><input type="checkbox" id="welcomeVisible"> Visible</label>
+          <label>Contenu HTML : <textarea id="welcomeHtml"></textarea></label>
+          <label><input type="color" id="welcomeColor"> Couleur texte</label>
+          <label>Taille (px) : <input type="number" id="welcomeSize" min="10"></label>
+          <label>Type fond :
+            <select id="welcomeBgType">
+              <option value="solid">Solide</option>
+              <option value="gradient">Dégradé</option>
+              <option value="image">Image</option>
+            </select>
+          </label>
+          <input type="color"
+                id="welcomeBgColor"
+                aria-label="Couleur du fond du bandeau">
+
+          <input type="text"
+                id="welcomeBgGradient"
+                placeholder="linear-gradient(...)"
+                aria-label="Gradient CSS du bandeau">
+
+          <input type="file"
+                id="welcomeBgImage"
+                accept="image/*"
+                aria-label="Image de fond du bandeau">
+
+        </fieldset>
+
+        <fieldset>
+          <legend>Blocs dynamiques</legend>
+          <button type="button" id="addBlock">Ajouter un bloc</button>
+          <div id="bodyBlocksList"></div>
+        </fieldset>
+
+        <button type="button" id="saveBody">Enregistrer</button>
+      </form>
+
+      <section>
+        <h3>Aperçu en direct</h3>
+        <iframe
+        src="preview-body.html"
+        class="preview-frame"
+        title="Aperçu en direct du corps de la page">
+      </iframe>
+
+
+      </section>
+    </section>
+  </main>
+
+  <script>
+    // Basculer l'affichage des inputs selon bgType
+    function toggleBgFields(prefix) {
+      const sel = document.getElementById(prefix + 'BgType').value;
+      document.getElementById(prefix + 'BgColor').style.display    = sel==='solid'    ? '' : 'none';
+      document.getElementById(prefix + 'BgGradient').style.display = sel==='gradient' ? '' : 'none';
+      document.getElementById(prefix + 'BgImage').style.display    = sel==='image'    ? '' : 'none';
+    }
+    ['body','welcome'].forEach(pref => {
+      document.getElementById(pref+'BgType').onchange = () => toggleBgFields(pref);
+    });
+  </script>
+</body>
+</html>

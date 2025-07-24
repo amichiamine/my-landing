@@ -1,0 +1,138 @@
+/* admin.css — styles communs aux 4 pages d’administration */
+
+:root {
+  --primary-blue: #0062ff;
+  --accent: #00c6ff;
+  --bg-admin: #f0f4f8;
+  --sidebar-bg: #ffffff;
+  --form-bg: #ffffff;
+  --font-family: 'Poppins', Arial, Helvetica, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background: var(--bg-admin);
+  display: flex;
+  flex-direction: column;
+}
+
+/* En-tête admin */
+header.main-header {
+  background: var(--primary-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+}
+header .logo img { height: 36px; margin-right: 0.5rem; }
+header .site-name { font-size: 1.2rem; font-weight: bold; }
+
+/* Burger menu */
+.burger { display: none; cursor: pointer; }
+.burger span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: #fff;
+  margin: 4px 0;
+  border-radius: 2px;
+}
+#burger-toggle { display: none; }
+
+/* Menu admin */
+.menu a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 1rem;
+  padding: 0.4em 0.8em;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+.menu a.active,
+.menu a:hover {
+  background: #fff;
+  color: var(--primary-blue);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  background: var(--sidebar-bg);
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+}
+.sidebar a {
+  display: block;
+  color: var(--primary-blue);
+  text-decoration: none;
+  margin: 0.5rem 0;
+  padding: 0.4rem;
+  border-radius: 4px;
+}
+.sidebar a.current {
+  background: var(--primary-blue);
+  color: #fff;
+}
+
+/* Formulaire */
+section > form {
+  background: var(--form-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+section form label {
+  display: block;
+  margin: 0.6rem 0 0.3rem;
+  font-weight: 500;
+}
+section form input[type="text"],
+section form input[type="number"],
+section form input[type="color"],
+section form input[type="file"],
+section form select,
+section form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 0.2rem;
+  font-family: var(--font-family);
+}
+section form input[type="checkbox"] {
+  margin-right: 0.4rem;
+}
+section form button {
+  display: inline-block;
+  background: var(--primary-blue);
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+section form button:hover {
+  opacity: 0.9;
+}
+
+/* Aperçu live iframe */
+.preview-frame {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 1rem;
+  background: #fff;
+}
+
+/* Responsive burger admin */
+@media (max-width: 900px) {
+  header.main-header { flex-direction: column; align-items: flex-start; }
+  .menu { display: none; flex-direction: column; width: 100%; }
+  #burger-toggle:checked + .burger + .menu { display: flex; }
+  .burger { display: block; }
+}
+
+/* Fin admin.css */

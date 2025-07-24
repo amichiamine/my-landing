@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Preview Body</title>
+  <link="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <main id="main-content"></main>
+
+  <script>
+    // Charge settings.json
+    fetch('assets/data/settings.json')
+      .then(res => res.json())
+      .then(cfg => {
+        const b = cfg.body;
+        const el = document.getElementById('main-content');
+        if (!b.visible) return;
+
+        // Fond et hauteur
+        el.style.background = b.bg.type === 'image'
+          ? `url('${b.bg.value}') center/cover no-repeat`
+          : b.bg.value;
+        el.style.minHeight = b.height + 'px';
+
+        // Trier et rendre sections
+        b.sections
+          .filter(s => s.visible && s.enabled)
+          .sort((a, c) => a.order - c.order)
+          .forEach(sec => {
+            switch(sec.key) {
+              case 'carousel':
+                renderCarousel(sec.data, el);
+                break;
+              case 'welcomeBanner':
+                renderWelcome(sec.data, el);
+                break;
+              case 'dynamicBlocks':
+                renderDynamicBlocks(sec.data, el);
+                break;
+            }
+          });
+
+        // Fermer burger si utilisé
+        document.querySelectorAll('.menu a').forEach(a => {
+          a.onclick = () => { 
+            const cb = document.getElementById('burger-toggle');
+            if (cb) cb.checked = false;
+          };
+        });
+      });
+
+    // Fonctions utilitaires importées de app.js
+    function bgCSS(type, value) {
+      return type === 'image'
+        ? `url('${value}') center/cover no-repeat`
+        : value;
+    }
+
+    function renderCarousel(cfg, container) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'carousel';
+      // Flèches
+      ['prev','next'].forEach(dir => {
+        const btn = document.createElement('button');
+        btn.className = dir;
+        btn.textContent = dir === 'prev' ? '❮' : '❯';
+        Object.assign(btn.style, {
+          background: cfg.arrowStyle.background,
+          color: cfg.arrowStyle.color,
+          fontSize: cfg.arrowStyle.size + 'px',
+          borderRadius: cfg.arrowStyle.borderRadius
+        });
+        btn.onmouseenter = () => btn.style.color = cfg.arrowStyle.hoverColor;
+        btn.onmouseleave = () => btn.style.color = cfg.arrowStyle.color;
+        wrapper.appendChild(btn);
+      });
+      // Contenu
+      const content = document.createElement('div');
+      content.className = 'carousel-content';
+      Object.assign(content.style, {
+        maxWidth: cfg.style.width + 'px',
+        height: cfg.style.height + 'px',
+        background: bgCSS(cfg.style.bg.type, cfg.style.bg.value),
+        borderRadius: cfg.style.borderRadius + 'px',
+        boxShadow: cfg.style.boxShadow
+      });
+      cfg.slides.forEach((s, i) => {
+        const slide = document.createElement('div');
+        slide.style.display = i === 0 ? 'flex' : 'none';
+        slide.innerHTML = `
+          <img src="${s.img}" class="carousel-img">
+          <div class="carousel-text">
+            <h2 style="font-family:${s.title.font};font-size:${s.title.size}px;color:${s.title.color}">${s.title.text}</h2>
+            <p style="font-family:${s.desc.font};font-size:${s.desc.size}px;color:${s.desc.color}">${s.desc.text}</p>
+            <a href="${s.button.link}" class="cta-btn" style="
+              background:${bgCSS(s.button.style.bg.type,s.button.style.bg.value)};
+              font-family:${s.button.style.font};
+              font-size:${s.button.style.size}px;
+              color:${s.button.style.color};
+              border-radius:${s.button.style.borderRadius}px;
+              padding:${s.button.style.padding.vertical}px ${s.button.style.padding.horizontal}px;
+            ">${s.button.label}</a>
+          </div>`;
+        content.appendChild(slide);
+      });
+      wrapper.appendChild(content);
+      container.appendChild(wrapper);
+
+      // Auto-play
+      let idx = 0;
+      let interval = setInterval(() => {
+        const slides = content.children;
+        slides[idx].style.display = 'none';
+        idx = (idx + 1) % slides.length;
+        slides[idx].style.display = 'flex';
+      }, cfg.speed);
+
+      if (cfg.pauseOnHover) {
+        wrapper.onmouseenter = () => clearInterval(interval);
+        wrapper.onmouseleave = () => {
+          interval = setInterval(() => {
+            const slides = content.children;
+            slides[idx].style.display = 'none';
+            idx = (idx + 1) % slides.length;
+            slides[idx].style.display = 'flex';
+          }, cfg.speed);
+        };
+      }
+
+      wrapper.querySelector('.prev').onclick = () => {
+        const slides = content.children;
+        slides[idx].style.display = 'none';
+        idx = (idx - 1 + slides.length) % slides.length;
+        slides[idx].style.display = 'flex';
+      };
+      wrapper.querySelector('.next').onclick = () => {
+        const slides = content.children;
+        slides[idx].style.display = 'none';
+        idx = (idx + 1) % slides.length;
+        slides[idx].style.display = 'flex';
+      };
+    }
+
+    function renderWelcome(cfg, container) {
+      const sec = document.createElement('section');
+      sec.className = 'welcome-banner';
+      sec.innerHTML = cfg.html;
+      const s = cfg.style;
+      Object.assign(sec.style, {
+        background: bgCSS(s.bg.type, s.bg.value),
+        color: s.color,
+        fontFamily: s.font,
+        fontSize: s.size + 'px',
+        borderRadius: s.borderRadius + 'px'
+      });
+      container.appendChild(sec);
+    }
+
+    function renderDynamicBlocks(cfg, container) {
+      if (!cfg.visible) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'dynamic-blocks';
+      cfg.items
+        .filter(b => b.visible)
+        .sort((a, b) => a.layout.order - b.layout.order)
+        .forEach(b => {
+          const div = document.createElement('div');
+          div.className = 'dynamic-block';
+          div.innerHTML = b.html;
+          const st = b.style, lt = b.layout;
+          Object.assign(div.style, {
+            background: bgCSS(st.bg.type, st.bg.value),
+            color: st.color,
+            fontFamily: st.font,
+            fontSize: st.size + 'px',
+            borderRadius: st.borderRadius + 'px',
+            margin: `${lt.spacing.margin.top}px ${lt.spacing.margin.right}px ${lt.spacing.margin.bottom}px ${lt.spacing.margin.left}px`,
+            padding: `${lt.spacing.padding.all}px`,
+            position: lt.position.type
+          });
+          if (lt.position.type === 'absolute') {
+            if (lt.position.top  != null) div.style.top  = lt.position.top + 'px';
+            if (lt.position.left != null) div.style.left = lt.position.left + 'px';
+          }
+          wrap.appendChild(div);
+        });
+      container.appendChild(wrap);
+    }
+  </script>
+</body>
+</html>

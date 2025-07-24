@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Admin — En-tête</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+  <script defer src="assets/js/admin-header.js"></script>
+</head>
+<body>
+  <header class="main-header" id="main-header">
+    <div class="logo">
+      <img src="assets/img/logo.svg" alt="">
+      <span class="site-name">Admin StaGate LMS</span>
+    </div>
+    <input type="checkbox" id="burger-toggle" title="Ouvrir le menu de navigation" aria-label="Ouvrir le menu de navigation">
+    <label for="burger-toggle" class="burger" title="Ouvrir le menu de navigation"><span></span><span></span><span></span></label>
+    <nav class="menu">
+      <a href="admin-header.html" class="active">En-tête</a>
+      <a href="admin-body.html">Corps</a>
+      <a href="admin-footer.html">Pied de page</a>
+      <a href="admin-users.html">Gestion utilisateurs</a>
+      <a href="index.html" target="_blank">Voir le site</a>
+      <a href="#" id="logoutBtn">Déconnexion</a>
+    </nav>
+  </header>
+
+  <main style="display:flex; flex-wrap:wrap;">
+    <aside class="sidebar">
+      <h2>En-tête</h2>
+      <a href="admin-header.html" class="current">Paramètres</a>
+      <a href="admin-users.html">Gestion utilisateurs</a>
+    </aside>
+
+    <section style="flex:1; padding:2rem;">
+      <form id="headerForm">
+        <h3>Paramètres En-tête</h3>
+
+        <label><input type="checkbox" id="headerVisible"> Visible</label>
+
+        <label>Type de fond :
+          <select id="bgType">
+            <option value="solid">Solide</option>
+            <option value="gradient">Dégradé</option>
+            <option value="image">Image</option>
+          </select>
+        </label>
+        <label for="bgColor">Couleur :</label>
+        <input type="color" id="bgColor">
+        <label for="bgGradient">Gradient CSS :</label>
+        <input type="text" id="bgGradient" placeholder="linear-gradient(...)">
+        <label for="bgImage">Image :</label>
+        <input type="file" id="bgImage" accept="image/*">
+
+        <label>Hauteur (px) : <input type="number" id="height" min="40" max="200"></label>
+        <label>Logo : <input type="file" id="logoFile" accept="image/*"></label>
+
+        <label>Nom du site : <input type="text" id="siteNameText"></label>
+        <label>Couleur du texte : <input type="color" id="siteNameColor"></label>
+        <label>Taille du texte (px) : <input type="number" id="siteNameSize" min="10"></label>
+
+        <fieldset>
+          <legend>Menu</legend>
+          <label><input type="checkbox" id="menuVisible"> Visible</label>
+          <label>Police : <input type="text" id="menuFont"></label>
+          <label>Taille (px) : <input type="number" id="menuSize"></label>
+          <label>Couleur : <input type="color" id="menuColor"></label>
+          <label>Arrondi (px) : <input type="number" id="menuRadius"></label>
+        </fieldset>
+
+        <button type="button" id="saveHeader">Enregistrer</button>
+      </form>
+
+      <section>
+        <h3>Aperçu en direct</h3>
+        <iframe
+        src="preview-header.html"
+        class="preview-frame"
+        title="Aperçu en direct du corps de l'en-tête">
+      </iframe>
+
+      </section>
+    </section>
+  </main>
+
+  <script>
+    // Affichage conditionnel des champs selon bgType
+    document.getElementById('bgType').onchange = e => {
+      const t = e.target.value;
+      document.getElementById('bgColor').style.display    = t==='solid'    ? '' : 'none';
+      document.getElementById('bgGradient').style.display = t==='gradient' ? '' : 'none';
+      document.getElementById('bgImage').style.display    = t==='image'    ? '' : 'none';
+    };
+  </script>
+</body>
+</html>

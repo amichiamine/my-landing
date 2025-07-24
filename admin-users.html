@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Admin — Gestion utilisateurs</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+  <script defer src="assets/js/admin-users.js"></script>
+</head>
+<body>
+  <header class="main-header" id="main-header">
+    <div class="logo">
+      <img src="assets/img/logo.svg" alt="">
+      <span class="site-name">Admin StaGate LMS</span>
+    </div>
+   <input type="checkbox" id="burger-toggle" title="Ouvrir le menu de navigation" aria-label="Ouvrir le menu de navigation">
+    <label for="burger-toggle" class="burger" title="Ouvrir le menu de navigation"><span></span><span></span><span></span></label>
+    <nav class="menu">
+      <a href="admin-header.html">En-tête</a>
+      <a href="admin-body.html">Corps</a>
+      <a href="admin-footer.html">Pied de page</a>
+      <a href="admin-users.html" class="active">Gestion utilisateurs</a>
+      <a href="index.html" target="_blank">Voir le site</a>
+      <a href="#" id="logoutBtn">Déconnexion</a>
+    </nav>
+  </header>
+
+  <main style="display:flex; flex-wrap:wrap;">
+    <aside class="sidebar">
+      <h2>Utilisateurs</h2>
+      <a href="admin-users.html" class="current">Gestion utilisateurs</a>
+      <a href="admin-header.html">En-tête</a>
+      <a href="admin-body.html">Corps</a>
+      <a href="admin-footer.html">Pied de page</a>
+    </aside>
+
+    <section style="flex:1; padding:2rem;">
+      <h3>Liste des utilisateurs</h3>
+      <table id="usersTable" style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr>
+            <th style="border:1px solid #ddd;padding:8px;">Utilisateur</th>
+            <th style="border:1px solid #ddd;padding:8px;">Rôle</th>
+            <th style="border:1px solid #ddd;padding:8px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <h3 style="margin-top:2rem;">Ajouter / Modifier un utilisateur</h3>
+      <button type="button" id="exportJson">Exporter JSON</button>
+      <label for="importJson" style="margin-left:1rem;">Importer JSON :</label>
+      <input type="file" id="importJson" accept=".json">
+
+      <form id="userForm" style="margin-top:1rem;">
+        <label>Utilisateur : <input type="text" id="userLogin"></label><br>
+        <label>Mot de passe : <input type="password" id="userPass"></label><br>
+        <label>Rôle :
+          <select id="userRole">
+            <option value="manager">manager</option>
+            <option value="admin">admin</option>
+          </select>
+        </label><br>
+        <button type="button" id="saveUser">Enregistrer utilisateur</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    // Burger menu & déconnexion
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll(".menu a").forEach(link => {
+        link.addEventListener("click", () => {
+          document.getElementById("burger-toggle").checked = false;
+        });
+      });
+      document.getElementById("logoutBtn").addEventListener("click", function(e) {
+        e.preventDefault();
+        localStorage.removeItem("stagate_admin_logged");
+        window.location.href = "index.html";
+      });
+
+      // Export JSON
+      document.getElementById("exportJson").addEventListener("click", () => {
+        const data = localStorage.getItem("stagateSettingsAdv") || "{}";
+        const blob = new Blob([data], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = "settings.json"; a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      // Import JSON
+      document.getElementById("importJson").addEventListener("change", function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function() {
+          try {
+            JSON.parse(reader.result);
+            localStorage.setItem("stagateSettingsAdv", reader.result);
+            window.location.reload();
+          } catch {
+            alert("JSON invalide");
+          }
+        };
+        reader.readAsText(file);
+      });
+    });
+  </script>
+</body>
+</html>
