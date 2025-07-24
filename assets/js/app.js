@@ -9,7 +9,7 @@ const SETTINGS_PATH = "assets/data/settings.json";
 document.addEventListener("DOMContentLoaded", () => {
   loadSettings().then(config => {
     applySettings(config);
-    initBurger();
+    /*initBurger();*/
   });
 });
 
@@ -23,7 +23,7 @@ async function loadSettings() {
     if (!resp.ok) throw new Error("Impossible de charger settings.json");
     return await resp.json();
   } catch (err) {
-    console.error(err);
+    console.error("err");
     return {}; // fallback minimal
   }
 }
@@ -47,13 +47,17 @@ function applySettings(cfg) {
 function renderHeader(h) {
   const el = document.getElementById("main-header");
   // Fond et taille
- el.style.background = bgCSS(h.bgType, h.bgValue);
+ el.style.background = bgCSS(h.bgType, h.bgValue); // bgType/bgValue au lieu de bg.type
   el.style.height = h.height + "px";
   // Logo & titre
   const logoDiv = document.createElement("div");
   logoDiv.className = "logo";
   if (h.logo) {
-    logoDiv.innerHTML = `<img src="${h.logo}" alt="logo" style="height:44px;"><span class="site-name" style="font-family:${h.siteName.font};font-size:${h.siteName.size}px;color:${h.siteName.color};">${h.siteName.text}</span>`;
+    logoDiv.innerHTML = `<img src="${h.logo}" alt="logo" style="height:44px">
+    <span class="site-name" style="font-family:${h.siteName.font};
+    font-size:${h.siteName.size}px;
+    color:${h.siteName.color}">;
+    ${h.siteName.text}</span>`;
   }
   el.innerHTML = ""; 
   el.appendChild(logoDiv);
@@ -84,7 +88,7 @@ function renderHeader(h) {
 /* ========= RENDER BODY ========= */
 function renderBody(b) {
   const el = document.getElementById("main-content");
-  el.style.background = bgCSS(b.bg.type, b.bg.value);
+  el.style.background = bgCSS(b.bgType, b.bgValue);
   el.style.minHeight = b.height + "px";
   el.innerHTML = "";
 
@@ -114,7 +118,9 @@ function renderCarousel(cfg, container) {
   const next = document.createElement("button");
   next.className = "next";
   next.innerHTML = "❯";
-
+ if (cfg.style?.bgType && cfg.style?.bgValue) {
+    slidesEl.style.background = bgCSS(cfg.style.bgType, cfg.style.bgValue);
+  }
   // Contenu slides
   const slidesEl = document.createElement("div");
   slidesEl.className = "carousel-content";
@@ -133,7 +139,7 @@ function renderCarousel(cfg, container) {
         <h2 style="font-family:${s.title.font};font-size:${s.title.size}px;color:${s.title.color}">${s.title.text}</h2>
         <p style="font-family:${s.desc.font};font-size:${s.desc.size}px;color:${s.desc.color}">${s.desc.text}</p>
         <a href="${s.button.link}" class="cta-btn" style="
-          background:${bgCSS(s.button.style.bg.type,s.button.style.bg.value)};
+          background:${bgCSS(s.button.style.bgType, s.button.style.bgValue)};
           font-family:${s.button.style.font};
           font-size:${s.button.style.size}px;
           color:${s.button.style.color};
@@ -177,7 +183,7 @@ function renderWelcome(cfg, container) {
   sec.innerHTML = cfg.html;
   // Styles
   const s = cfg.style;
-  sec.style.background = bgCSS(s.bg.type, s.bg.value);
+  sec.style.background = bgCSS(s.bgType, s.bgValue);
   sec.style.color = s.color;
   sec.style.fontFamily = s.font;
   sec.style.fontSize = s.size + "px";
@@ -187,37 +193,48 @@ function renderWelcome(cfg, container) {
 
 /* ========= RENDER DYNAMIC BLOCKS ========= */
 function renderDynamicBlocks(cfg, container) {
-  if (!cfg.visible || !cfg.items) return;
+  if (!cfg?.visible || !cfg?.items?.length) return; // Ajout de vérifications
   const wrap = document.createElement("section");
   wrap.className = container.id==="main-content" ? "dynamic-blocks" : "";
   cfg.items
     .filter(b=>b.visible)
     .sort((a,b)=>a.layout.order - b.layout.order)
     .forEach(b => {
+       if (!b?.style) return; // Vérification ajoutée
       const el = document.createElement("div");
       el.className = container.id==="main-content" ? "dynamic-block" : "";
       el.innerHTML = b.html;
       // Styles
       const st = b.style;
-      el.style.background = bgCSS(st.bg.type, st.bg.value);
+    el.style.background = bgCSS(st.bgType, st.bgValue || "#ffffff"); // Valeur par défaut
       el.style.color      = st.color;
       el.style.fontFamily = st.font;
       el.style.fontSize   = st.size + "px";
       el.style.borderRadius = st.borderRadius + "px";
       // Spacing
-      const sp = b.layout.spacing;
-      const m = sp.margin, p = sp.padding;
-      el.style.margin = `${m.top}px ${m.right}px ${m.bottom}px ${m.left}px`;
-      el.style.padding = p.all!==undefined
-        ? `${p.all}px`
-        : `${p.top}px ${p.right}px ${p.bottom}px ${p.left}px`;
+      // Nouveau code
+        const layout = b.layout;
+        // margin: [top, right, bottom, left]
+        const m = layout.margin || [0,0,0,0];
+        // padding: either [all] or [top, right, bottom, left]
+        const pArr = layout.padding || [0];
+        let padding;
+        if (pArr.length === 1) {
+          padding = `${pArr[0]}px`;
+        } else {
+          padding = `${pArr[0]}px ${pArr[1]}px ${pArr[2]}px ${pArr[3]}px`;
+        }
+
+        el.style.margin  = `${m[0]}px ${m[1]}px ${m[2]}px ${m[3]}px`;
+        el.style.padding = padding;
+
       // Position
       const pos = b.layout.position;
-      el.style.position = pos.type;
-      if (pos.type==="absolute") {
-        if (pos.top  !== null) el.style.top  = pos.top + "px";
-        if (pos.left !== null) el.style.left = pos.left + "px";
-      }
+      el.style.position = layout.position.type;
+if (layout.position.type === "absolute") {
+  if (layout.position.top  != null) el.style.top  = layout.position.top + "px";
+  if (layout.position.left != null) el.style.left = layout.position.left + "px";
+}
       wrap.appendChild(el);
     });
   container.appendChild(wrap);
@@ -227,7 +244,7 @@ function renderDynamicBlocks(cfg, container) {
 function renderFooter(f) {
   const el = document.getElementById("main-footer");
   // Fond et dimensions
-  el.style.background = bgCSS(f.bg.type, f.bg.value);
+  el.style.background = bgCSS(f.bgType, f.bgValue);
   el.style.height = f.height + "px";
   // Texte
   if (f.text.visible) {
@@ -242,8 +259,9 @@ function bgCSS(type, val) {
   if (type === "image") return `url('${val}') center/cover no-repeat`;
   return val;
 }
-function initBurger() {
-  document.querySelectorAll('.menu a').forEach(a=>{
-    a.onclick = ()=> document.getElementById('burger-toggle').checked = false;
-  });
+
+function bgCSS(type, val) {
+  if (!val) return ""; // Valeur vide si undefined
+  if (type === "image") return `url('${val}') center/cover no-repeat`;
+  return val;
 }

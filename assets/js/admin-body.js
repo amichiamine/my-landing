@@ -48,8 +48,8 @@ function populateForm() {
   const cfg = loadConfig().body || {};
   document.getElementById("bodyVisible").checked     = cfg.visible !== false;
   document.getElementById("bodyBgType").value       = cfg.bgType   || "solid";
-  document.getElementById("bodyBgColor").value      = cfg.bgType==="solid"?cfg.bgValue:"#ffffff";
-  document.getElementById("bodyBgGradient").value   = cfg.bgType==="gradient"?cfg.bgValue:"";
+  document.getElementById("bodyBgColor").value      = cfg.bgType==="solid"?cfg.body.bgValue:"#ffffff";
+  document.getElementById("bodyBgGradient").value   = cfg.bgType==="gradient"?cfg.body.bgValue:"";
   document.getElementById("bodyHeight").value       = cfg.height   || 600;
 
   // sections order
@@ -105,7 +105,7 @@ function saveBody() {
   allCfg.body = {
     visible: document.getElementById("bodyVisible").checked,
     bgType:  document.getElementById("bodyBgType").value,
-    bgValue: document.getElementById("bodyBgType").value==="solid"
+    bgValue : document.getElementById("bodyBgType").value==="solid"
                ? document.getElementById("bodyBgColor").value
                : document.getElementById("bodyBgGradient").value,
     height:  parseInt(document.getElementById("bodyHeight").value,10),

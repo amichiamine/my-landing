@@ -1,22 +1,21 @@
-{  "users": {
+{
+  "users": {
     "roles": ["admin", "manager"],
     "credentials": {
-      "admin":   "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8", 
-      "manager": "12dea96fec20593566ab75692c9949596833adc9"  
+      "admin": "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8",
+      "manager": "12dea96fec20593566ab75692c9949596833adc9"
     },
     "pages": {
-      "manager": ["header","body","footer"],
-      "admin":   ["header","body","footer","userManagement"]
+      "manager": ["header", "body", "footer"],
+      "admin": ["header", "body", "footer", "userManagement"]
     }
   },
-
   "header": {
     "visible": true,
-    "bgType": "gradient",         
+    "bgType": "gradient",
     "bgValue": "linear-gradient(90deg,#0062ff 0%,#00c6ff 100%)",
     "height": 70,
     "logo": "assets/img/logo.png",
-    "bgImage": "data:image/png;base64,….",
     "siteName": {
       "visible": true,
       "text": "StaGate LMS",
@@ -27,20 +26,33 @@
     "menu": {
       "visible": true,
       "items": [
-        { "label":"Accueil",        "link":"#",                  "active": true },
-        { "label":"À propos",       "link":"#about",             "active": false },
-        { "label":"Contactez-nous", "link":"#contact",           "active": false },
-        { "label":"Accès Admin",    "link":"admin-header.html",   "active": false }
+        {
+          "label": "Accueil",
+          "link": "#",
+          "active": true
+        },
+        {
+          "label": "À propos",
+          "link": "#about",
+          "active": false
+        },
+        {
+          "label": "Contactez-nous",
+          "link": "#contact",
+          "active": false
+        },
+        {
+          "label": "Accès Admin",
+          "link": "admin-header.html",
+          "active": false
+        }
       ],
       "style": {
         "font": "Poppins",
         "size": 14,
         "color": "#ffffff",
         "background": "transparent",
-        "borderRadius": 20,
-        "bgType": "gradient",
-        "bgValue": "#fff",
-        "bgImage": "data:image/…"
+        "borderRadius": 20
       },
       "burger": {
         "enabled": true,
@@ -53,7 +65,7 @@
         {
           "id": "hdrBlk1",
           "visible": true,
-          /* "html": "<p>Bloc header exemple</p>",*/
+          "html": "<p>Bloc header exemple</p>",
           "style": {
             "bgType": "solid",
             "bgValue": "#ffffff",
@@ -65,15 +77,18 @@
           },
           "layout": {
             "order": 1,
-            "margin": [8,8,8,8],
+            "margin": [8, 8, 8, 8],
             "padding": [8],
-            "position": { "type": "relative", "top": null, "left": null }
+            "position": {
+              "type": "relative",
+              "top": null,
+              "left": null
+            }
           }
         }
       ]
     }
   },
-
   "body": {
     "visible": true,
     "bgType": "gradient",
@@ -85,9 +100,13 @@
         "visible": true,
         "order": 1,
         "enabled": true,
-        "margin": [16,16,16,16],
+        "margin": [16, 16, 16, 16],
         "padding": [0],
-        "position": { "type": "relative", "top": null, "left": null },
+        "position": {
+          "type": "relative",
+          "top": null,
+          "left": null
+        },
         "data": {
           "style": {
             "width": 640,
@@ -95,14 +114,23 @@
             "bgType": "solid",
             "bgValue": "#ffffff",
             "borderRadius": 16,
-            "boxShadow": "0 0 10px rgba(0,0,0,0.1)",
-            "bgImage": "data:image/…"
+            "boxShadow": "0 0 10px rgba(0,0,0,0.1)"
           },
           "slides": [
             {
               "img": "assets/img/slide1.png",
-              "title": { "text":"Titre dynamique 1","font":"Poppins","size":20,"color":"#ffffff" },
-              "desc":  { "text":"Description dynamique 1","font":"Poppins","size":14,"color":"#ffffff" },
+              "title": {
+                "text": "Titre dynamique 1",
+                "font": "Poppins",
+                "size": 20,
+                "color": "#ffffff"
+              },
+              "desc": {
+                "text": "Description dynamique 1",
+                "font": "Poppins",
+                "size": 14,
+                "color": "#ffffff"
+              },
               "button": {
                 "label": "En savoir plus",
                 "link": "https://didnous.com/Elearning",
@@ -113,14 +141,24 @@
                   "size": 16,
                   "color": "#ffffff",
                   "borderRadius": 24,
-                  "padding": [8,16]
+                  "padding": [8, 16]
                 }
               }
             },
             {
               "img": "assets/img/slide2.jpeg",
-              "title": { "text":"Titre dynamique 2","font":"Poppins","size":20,"color":"#ffffff" },
-              "desc":  { "text":"Description dynamique 2","font":"Poppins","size":14,"color":"#ffffff" },
+              "title": {
+                "text": "Titre dynamique 2",
+                "font": "Poppins",
+                "size": 20,
+                "color": "#ffffff"
+              },
+              "desc": {
+                "text": "Description dynamique 2",
+                "font": "Poppins",
+                "size": 14,
+                "color": "#ffffff"
+              },
               "button": {
                 "label": "En savoir plus",
                 "link": "https://didnous.com",
@@ -131,7 +169,7 @@
                   "size": 16,
                   "color": "#ffffff",
                   "borderRadius": 24,
-                  "padding": [8,16]
+                  "padding": [8, 16]
                 }
               }
             }
@@ -152,9 +190,13 @@
         "visible": true,
         "order": 2,
         "enabled": true,
-        "margin": [32,32,32,32],
+        "margin": [32, 32, 32, 32],
         "padding": [24],
-        "position": { "type": "relative", "top": null, "left": null },
+        "position": {
+          "type": "relative",
+          "top": null,
+          "left": null
+        },
         "data": {
           "html": "<h1>Bienvenue sur StaGate LMS Hi</h1><p>Apprentissage virtuel, flexible et évolutif.</p><button class='start-btn'>Teste</button>",
           "style": {
@@ -172,9 +214,13 @@
         "visible": true,
         "order": 3,
         "enabled": true,
-        "margin": [24,24,24,24],
+        "margin": [24, 24, 24, 24],
         "padding": [16],
-        "position": { "type": "relative", "top": null, "left": null },
+        "position": {
+          "type": "relative",
+          "top": null,
+          "left": null
+        },
         "data": {
           "items": [
             {
@@ -192,9 +238,13 @@
               },
               "layout": {
                 "order": 1,
-                "margin": [16,16,16,16],
+                "margin": [16, 16, 16, 16],
                 "padding": [12],
-                "position": { "type": "relative", "top": null, "left": null }
+                "position": {
+                  "type": "relative",
+                  "top": null,
+                  "left": null
+                }
               }
             }
           ]
@@ -202,7 +252,6 @@
       }
     ]
   },
-
   "footer": {
     "visible": true,
     "bgType": "gradient",
@@ -229,15 +278,18 @@
             "font": "Poppins",
             "size": 14,
             "color": "#ffffff",
-            "padding": [8,12],
-            "borderRadius": 4,
-            "bgImage": "data:image/…"
+            "padding": [8, 12],
+            "borderRadius": 4
           },
           "layout": {
             "order": 2,
-            "margin": [8,8,8,8],
+            "margin": [8, 8, 8, 8],
             "padding": [6],
-            "position": { "type": "relative", "top": null, "left": null }
+            "position": {
+              "type": "relative",
+              "top": null,
+              "left": null
+            }
           }
         }
       ]

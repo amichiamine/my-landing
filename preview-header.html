@@ -21,10 +21,9 @@
         if (!h.visible) return;
 
         // Fond & taille
-        el.style.background = 
-          h.bg.type === 'image'
-            ? `url('${h.bg.value}') center/cover no-repeat`
-            : h.bg.value;
+        el.style.background = h.bgType === 'image'
+  ? `url('${h.bgImage || h.bgValue}') center/cover no-repeat`
+  : h.bgValue;
         el.style.height = h.height + 'px';
 
         // Logo + siteName
