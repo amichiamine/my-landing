@@ -1,8 +1,9 @@
-{  "users": {
+{
+  "users": {
     "roles": ["admin", "manager"],
     "credentials": {
-      "admin":   "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8", 
-      "manager": "12dea96fec20593566ab75692c9949596833adc9"  
+      "admin":   "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8",
+      "manager": "12dea96fec20593566ab75692c9949596833adc9"
     },
     "pages": {
       "manager": ["header","body","footer"],
@@ -12,11 +13,10 @@
 
   "header": {
     "visible": true,
-    "bgType": "gradient",         
+    "bgType": "gradient",
     "bgValue": "linear-gradient(90deg,#0062ff 0%,#00c6ff 100%)",
     "height": 70,
     "logo": "assets/img/logo.png",
-    "bgImage": "data:image/png;base64,….",
     "siteName": {
       "visible": true,
       "text": "StaGate LMS",
@@ -27,40 +27,33 @@
     "menu": {
       "visible": true,
       "items": [
-        { "label":"Accueil",        "link":"#",                  "active": true },
-        { "label":"À propos",       "link":"#about",             "active": false },
-        { "label":"Contactez-nous", "link":"#contact",           "active": false },
-        { "label":"Accès Admin",    "link":"admin-header.html",   "active": false }
+        { "label": "Accueil",         "link": "#",                 "active": true  },
+        { "label": "À propos",         "link": "#about",            "active": false },
+        { "label": "Contactez-nous",   "link": "#contact",          "active": false },
+        { "label": "Accès Admin",      "link": "admin-header.html", "active": false }
       ],
       "style": {
         "font": "Poppins",
         "size": 14,
         "color": "#ffffff",
         "background": "transparent",
-        "borderRadius": 20,
-        "bgType": "gradient",
-        "bgValue": "#fff",
-        "bgImage": "data:image/…"
-      },
-      "burger": {
-        "enabled": true,
-        "iconColor": "#ffffff"
+        "borderRadius": 20
       }
     },
     "dynamicBlocks": {
-      "visible": true,
+      "visible": false,
       "items": [
         {
           "id": "hdrBlk1",
           "visible": true,
-          /* "html": "<p>Bloc header exemple</p>",*/
+          "html": "<a href='#'>Lien dynamique</a>",
           "style": {
             "bgType": "solid",
             "bgValue": "#ffffff",
             "font": "Poppins",
             "size": 14,
             "color": "#333333",
-            "paddingAll": 8,
+            "padding": [8],
             "borderRadius": 8
           },
           "layout": {
@@ -85,9 +78,6 @@
         "visible": true,
         "order": 1,
         "enabled": true,
-        "margin": [16,16,16,16],
-        "padding": [0],
-        "position": { "type": "relative", "top": null, "left": null },
         "data": {
           "style": {
             "width": 640,
@@ -95,14 +85,13 @@
             "bgType": "solid",
             "bgValue": "#ffffff",
             "borderRadius": 16,
-            "boxShadow": "0 0 10px rgba(0,0,0,0.1)",
-            "bgImage": "data:image/…"
+            "boxShadow": "0 0 10px rgba(0,0,0,0.1)"
           },
           "slides": [
             {
               "img": "assets/img/slide1.png",
-              "title": { "text":"Titre dynamique 1","font":"Poppins","size":20,"color":"#ffffff" },
-              "desc":  { "text":"Description dynamique 1","font":"Poppins","size":14,"color":"#ffffff" },
+              "title": { "text": "Titre dynamique 1", "font": "Poppins", "size": 20, "color": "#ffffff" },
+              "desc":  { "text": "Description dynamique 1", "font": "Poppins", "size": 14, "color": "#ffffff" },
               "button": {
                 "label": "En savoir plus",
                 "link": "https://didnous.com/Elearning",
@@ -119,8 +108,8 @@
             },
             {
               "img": "assets/img/slide2.jpeg",
-              "title": { "text":"Titre dynamique 2","font":"Poppins","size":20,"color":"#ffffff" },
-              "desc":  { "text":"Description dynamique 2","font":"Poppins","size":14,"color":"#ffffff" },
+              "title": { "text": "Titre dynamique 2", "font": "Poppins", "size": 20, "color": "#ffffff" },
+              "desc":  { "text": "Description dynamique 2", "font": "Poppins", "size": 14, "color": "#ffffff" },
               "button": {
                 "label": "En savoir plus",
                 "link": "https://didnous.com",
@@ -137,13 +126,6 @@
             }
           ],
           "speed": 5000,
-          "arrowStyle": {
-            "color": "#ffffff",
-            "size": 30,
-            "background": "rgba(0,0,0,0.4)",
-            "borderRadius": "50%",
-            "hoverColor": "#0062ff"
-          },
           "pauseOnHover": true
         }
       },
@@ -152,11 +134,8 @@
         "visible": true,
         "order": 2,
         "enabled": true,
-        "margin": [32,32,32,32],
-        "padding": [24],
-        "position": { "type": "relative", "top": null, "left": null },
         "data": {
-          "html": "<h1>Bienvenue sur StaGate LMS Hi</h1><p>Apprentissage virtuel, flexible et évolutif.</p><button class='start-btn'>Teste</button>",
+          "html": "<h1>Bienvenue sur StaGate LMS</h1><p>Apprentissage virtuel, flexible et évolutif.</p><button class='start-btn'>Tester</button>",
           "style": {
             "bgType": "solid",
             "bgValue": "#1376c4",
@@ -172,9 +151,6 @@
         "visible": true,
         "order": 3,
         "enabled": true,
-        "margin": [24,24,24,24],
-        "padding": [16],
-        "position": { "type": "relative", "top": null, "left": null },
         "data": {
           "items": [
             {
@@ -187,7 +163,7 @@
                 "font": "Poppins",
                 "size": 16,
                 "color": "#222222",
-                "paddingAll": 24,
+                "padding": [24],
                 "borderRadius": 16
               },
               "layout": {
@@ -230,8 +206,7 @@
             "size": 14,
             "color": "#ffffff",
             "padding": [8,12],
-            "borderRadius": 4,
-            "bgImage": "data:image/…"
+            "borderRadius": 4
           },
           "layout": {
             "order": 2,

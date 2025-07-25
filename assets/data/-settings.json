@@ -65,7 +65,7 @@
         {
           "id": "hdrBlk1",
           "visible": true,
-          "html": "<p>Bloc header exemple</p>",
+         /* "html": "<p>Bloc header exemple</p>",*/
           "style": {
             "bgType": "solid",
             "bgValue": "#ffffff",

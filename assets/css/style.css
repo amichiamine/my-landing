@@ -23,29 +23,32 @@ body { display:flex; flex-direction:column; }
 .logo img { height:44px; width:44px; }
 .site-name { font-weight:bold; font-size:1.25rem; color:#fff; }
 
-/* Burger menu (mobile) */
-#burger-toggle { display:none; }
-.burger {
-  display:none; flex-direction:column; gap:4px;
-  width:30px; height:30px; cursor:pointer;
-}
+/* Burger menu */
+.burger { display: none; cursor: pointer; }
 .burger span {
-  display:block; height:3px; background:#fff; border-radius:2px;
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: #fff;
+  margin: 4px 0;
+  border-radius: 2px;
 }
+#burger-toggle { display: none; }
 
-/* Menu items */
-.menu {
-  display:flex; gap:1rem;
-}
+/* Menu admin */
 .menu a {
-  color:#fff; text-decoration:none;
-  padding:0.4em 1em; border-radius:20px;
-  background:transparent; font-weight:600; transition:.3s;
+  color: #fff;
+  text-decoration: none;
+  margin-left: 1rem;
+  padding: 0.4em 0.8em;
+  border-radius: 6px;
+  transition: background 0.3s;
 }
-.menu a.active, .menu a:hover {
-  background:#fff; color:var(--primary-blue);
+.menu a.active,
+.menu a:hover {
+  background: #fff;
+  color: var(--primary-blue);
 }
-
 /* Responsive header */
 @media (max-width:900px) {
   #main-header { flex-direction:column; align-items:flex-start; height:auto; }
